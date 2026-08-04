@@ -92,6 +92,12 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     @property
     def max_temp(self):
         """Return the maximum temperature."""
+        boost_mode = getattr(self.device.water_heater_mode, "BOOST", None)
+        if boost_mode is not None and self.current_operation == boost_mode.name:
+            if hasattr(self.device, "water_heater_maximum_setpoint_temperature_maximum"):
+                max_setpoint = self.device.water_heater_maximum_setpoint_temperature_maximum
+                if max_setpoint is not None:
+                    return max_setpoint
         return self.device.water_heater_maximum_temperature
 
     @property

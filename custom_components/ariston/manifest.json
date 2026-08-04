@@ -17,6 +17,6 @@
     "ariston @ git+https://github.com/vadsiraly/python-ariston-api.git@0.20.2"
   ],
   "ssdp": [],
-  "version": "0.20.1",
+  "version": "0.20.2",
   "zeroconf": []
 }
