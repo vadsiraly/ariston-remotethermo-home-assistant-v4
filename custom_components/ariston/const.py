@@ -16,6 +16,7 @@ from ariston.const import (
     EvoDeviceProperties,
     EvoLydosDeviceProperties,
     EvoOneDeviceProperties,
+    LydosHybridDeviceProperties,
     MedDeviceSettings,
     MenuItemNames,
     NuosSplitProperties,
@@ -25,7 +26,6 @@ from ariston.const import (
     ThermostatProperties,
     VelisDeviceProperties,
     WheType,
-    LydosDeviceProperties,
 )
 from homeassistant.components.binary_sensor import BinarySensorEntityDescription
 from homeassistant.components.climate import ClimateEntityDescription
@@ -557,7 +557,7 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
         ],
     ),
     AristonSensorEntityDescription(
-        key=LydosDeviceProperties.BOOST_REQ_TEMP,
+        key=LydosHybridDeviceProperties.BOOST_REQ_TEMP,
         name=f"{NAME} boost req temp",
         icon="mdi:thermometer-chevron-up",
         device_class=SensorDeviceClass.TEMPERATURE,
@@ -565,7 +565,7 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
         get_native_value=lambda entity: entity.device.boost_req_temp_value,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         system_types=[SystemType.VELIS],
-        whe_types=[WheType.Lydos, WheType.LydosHybrid],
+        whe_types=[WheType.LydosHybrid],
     ),
 ]
 
