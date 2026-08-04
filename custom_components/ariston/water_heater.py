@@ -140,7 +140,20 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
             self.name,
         )
 
-        await self.device.async_set_water_heater_temperature(temperature)
+        # Check if we are currently in BOOST mode for Lydos/Lux devices
+        from ariston.const import EvoDeviceProperties, LuxPlantMode, LydosPlantMode
+        current_mode = self.device.data.get(EvoDeviceProperties.MODE)
+        
+        is_boost = current_mode in (
+            getattr(LuxPlantMode, "BOOST", None).value if hasattr(LuxPlantMode, "BOOST") else -99,
+            getattr(LydosPlantMode, "BOOST", None).value if hasattr(LydosPlantMode, "BOOST") else -99
+        )
+
+        if is_boost and hasattr(self.device, "async_set_water_heater_boost_req_temp"):
+            await self.device.async_set_water_heater_boost_req_temp(temperature)
+        else:
+            await self.device.async_set_water_heater_temperature(temperature)
+
         self.async_write_ha_state()
 
     async def async_set_operation_mode(self, operation_mode):
