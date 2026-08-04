@@ -25,10 +25,11 @@ from ariston.const import (
     ThermostatProperties,
     VelisDeviceProperties,
     WheType,
+    LydosDeviceProperties,
 )
 from homeassistant.components.binary_sensor import BinarySensorEntityDescription
 from homeassistant.components.climate import ClimateEntityDescription
-from homeassistant.components.number import NumberEntityDescription
+from homeassistant.components.number import NumberDeviceClass, NumberEntityDescription
 from homeassistant.components.select import SelectEntityDescription
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -554,6 +555,17 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
             WheType.Lux,
             WheType.Lux2,
         ],
+    ),
+    AristonSensorEntityDescription(
+        key=LydosDeviceProperties.BOOST_REQ_TEMP,
+        name=f"{NAME} boost req temp",
+        icon="mdi:thermometer-chevron-up",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        get_native_value=lambda entity: entity.device.boost_req_temp_value,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        system_types=[SystemType.VELIS],
+        whe_types=[WheType.Lydos, WheType.LydosHybrid],
     ),
 ]
 
